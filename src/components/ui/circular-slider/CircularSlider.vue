@@ -70,7 +70,7 @@ const handleMouseUp = () => {
 </script>
 
 <template>
-  <div id="completeContainer" class="py-1 bg-lime-400" @mousemove="handleMouseMove" @mouseleave="handleMouseUp" @mouseup="handleMouseUp" >
+  <div id="completeContainer" class="py-1" @mousemove="handleMouseMove" @mouseleave="handleMouseUp" @mouseup="handleMouseUp" >
     <div id="rotationSliderContainer" :class="cn(
       'relative flex touch-none select-none items-center',
       props.class,
