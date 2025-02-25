@@ -8,7 +8,7 @@ const emits = defineEmits<CircularSliderEmits>()
 
 const containerSize = 150;
 const sliderSize = ref(13);
-const stepSize = ref(2);
+const stepSize = ref(3);
 const radius = containerSize / 2;
 const mdown = ref(false);
 const degrees = ref(0);
@@ -40,10 +40,12 @@ const handleMouseMove = (e: MouseEvent) => {
   if (mdown.value) {
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
 
+    
+
     var centerX = rect.width / 2;
     var centerY = rect.height / 2;
     
-
+    console.log(centerX, centerY)
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
 
@@ -70,14 +72,18 @@ const handleMouseUp = () => {
 </script>
 
 <template>
-  <div id="completeContainer" class="py-1" @mousemove="handleMouseMove" @mouseleave="handleMouseUp" @mouseup="handleMouseUp" >
+  <div id="completeContainer" class="p-8" @mousemove="handleMouseMove" @mouseleave="handleMouseUp" @mouseup="handleMouseUp" >
     <div id="rotationSliderContainer" :class="cn(
-      'relative flex touch-none select-none items-center',
+      'relative flex touch-none select-none items-center rounded-full bg-gray-300 dark:bg-gray-300 m-auto',
+      'cursor-default justify-center items-center',
       props.class,
     )" >
-      <div id="rotationSlider" @mousedown="handleMouseDown" :class="(mdown) ? 'bg-red-600' : 'bg-gray-400'"></div>
-      <div id="rotationSliderDegrees" class="text-3xl">{{ props.modelValue || degreesView }}&deg;</div>
-      <div v-for="step in props.steps" :style="'--angle: ' + stepInset(step)" class="rotationStep"></div>
+      <div id="rotationSlider" @mousedown="handleMouseDown" :class="cn(
+        ((mdown) ? 'bg-red-600 dark:bg-red-600' : 'bg-gray-400 dark:bg-gray-600'),
+        'absolute cursor-pointer rounded-full',
+      )"></div>
+      <div id="rotationSliderDegrees" class="text-3xl text-black dark:text-gray-600">{{ degreesView }}&deg;</div>
+      <div v-for="step in props.steps":style="'--angle: ' + stepInset(step)" class="rotationStep rounded-full bg-gray-600 dark:bg-gray-400"></div>
     </div>
   </div>
 </template>
@@ -86,22 +92,12 @@ const handleMouseUp = () => {
 #rotationSliderContainer {
   width: v-bind("containerSize + 'px'");
   height: v-bind("containerSize + 'px'");
-  background: #ffffff;
-  border-radius: v-bind("containerSize + 'px'"); 
-  margin: 50px auto;
-  cursor: default;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 #rotationSlider {
-  position: absolute;
   inset: v-bind('sliderInset');
   height: v-bind("sliderSize + 'px'");
   width: v-bind("sliderSize + 'px'");
-  border-radius: v-bind("sliderSize + 'px'");
-  cursor: pointer;
 }
 
 .rotationStep {
@@ -109,12 +105,9 @@ const handleMouseUp = () => {
   inset: var(--angle);
   height: v-bind("stepSize + 'px'");
   width: v-bind("stepSize + 'px'");
-  border-radius: v-bind("stepSize + 'px'");
-  background: #cccccc;
 }
 
 #rotationSliderDegrees {
-  color: #666;
   user-select: none;
 }
 </style>
