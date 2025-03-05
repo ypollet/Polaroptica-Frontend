@@ -84,6 +84,7 @@ def images(id):
             encoded_images.append(
                 {
                     "name": image,
+                    "label": image,
                     "angle": round(rotation_file["rotation"][image]["angle"], 2),
                 }
             )
