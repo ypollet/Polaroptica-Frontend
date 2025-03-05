@@ -1,9 +1,10 @@
 import Color from "color"
 import type { Coordinates, Position } from "@/data/models/coordinates"
+import type { RotationImage } from "./rotation_image"
 
 export type Pose = {
     marker: Coordinates
-    image: number
+    image: RotationImage
 }
 
 
@@ -64,7 +65,7 @@ export class Landmark {
         this.color = Color.rgb(color[0], color[1], color[2])
     }
 
-    setPose(image : number, pose: Coordinates) {
+    setPose(image : RotationImage, pose: Coordinates) {
         this.pose = {
             marker : pose,
             image : image

@@ -9,10 +9,11 @@ import { useSettingsStore, useImagesStore } from "@/lib/stores";
 import { CameraViewer } from "@/components/ui/camera-viewer"
 
 const settingsStore = useSettingsStore()
-const route=useRoute();
 const imageStore = useImagesStore()
 
-imageStore.setPath(route.params.id as string)
+let urlParams = new URLSearchParams(window.location.search);
+
+imageStore.setPath(urlParams.get('series') as string)
 
 </script>
 

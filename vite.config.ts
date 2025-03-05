@@ -11,15 +11,7 @@ import autoprefixer from "autoprefixer"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    watch: {
-      ignored: [
-        "**/data/**",
-        "**/dist/**"
-      ],
-    },
-  },
-  css: {
+    css: {
     postcss: {
       plugins: [tailwind(), autoprefixer()],
     },
@@ -33,6 +25,7 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  base: "./",
   build: {
     assetsDir: "static",
     rollupOptions: {

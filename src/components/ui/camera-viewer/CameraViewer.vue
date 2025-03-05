@@ -31,25 +31,6 @@ async function getImages(): Promise<ProjectData> {
     imageStore.rotationImages = data.rotationImages
     imageStore.size = data.size
     imageStore.anglesMap = new Map(imageStore.rotationImages.map((image, index) => [Math.round(image.angle), index]))
-    /*
-    for(let i = 0; i < 360; i++){
-      let j = i
-      let k = i
-      while(originalRotation[j] == undefined && originalRotation[k] == undefined){
-        j = (360 + j + 1) % 360;
-        k = (360 + k - 1) % 360;
-      }
-      console.log("i : ", i , ";j : ", j, "; k : ", k)
-      if(originalRotation[j] != undefined){
-        imageStore.nearestImage[i] = originalRotation[j]!
-      }
-      else {
-        imageStore.nearestImage[i] = originalRotation[k]!
-      }
-      
-     
-    }
-      */
 
     return data
   })
@@ -65,7 +46,7 @@ async function getImages(): Promise<ProjectData> {
     </div>
     <div v-if="data" class="w-full h-full flex flex-col items-center">
       <div class="flex grow flex-row w-full justify-start">
-        <Label class="border p-2">{{ imageStore.selectedImage!.name }}</Label>
+        <Label class="border p-2">{{ imageStore.selectedImage.label }}</Label>
       </div>
       <ImageViewer class="object-fit" aspect-ratio="auto" draggable="false" />
     </div>

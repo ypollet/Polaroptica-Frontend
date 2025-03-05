@@ -33,6 +33,7 @@ const stepInset = (angle: number) => {
 }
 
 const degreesView = computed(() => {
+  
   return Math.round((props.modelValue != undefined) ? props.modelValue : degrees.value);
 });
 
@@ -45,7 +46,6 @@ const handleMouseMove = (e: MouseEvent) => {
     var centerX = rect.width / 2;
     var centerY = rect.height / 2;
     
-    console.log(centerX, centerY)
     const offsetX = e.clientX - rect.left;
     const offsetY = e.clientY - rect.top;
 

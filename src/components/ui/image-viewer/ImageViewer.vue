@@ -60,13 +60,13 @@ function loaded() {
       screenFit()
     }
     if (base_image.value!.alt.startsWith("Thumbnail")) {
-      let image_name = imagesStore.selectedImage!.name
+      let image_name = imagesStore.selectedImage.name
       setTimeout(() => {
-        if (image_name == imagesStore.selectedImage!.name) {
+        if (image_name == imagesStore.selectedImage.name) {
           nextTick(() => {
             // Just verifies we draw the right image
             if (base_image.value!.alt.endsWith(image_name)) {
-              base_image.value!.src = imagesStore.selectedImage!.image
+              base_image.value!.src = imagesStore.selectedImage.image
               base_image.value!.alt = image_name
               update()
             }
@@ -251,7 +251,7 @@ function drawMarker(ctx: CanvasRenderingContext2D, landmark: Landmark, radius: n
   ctx.fillStyle = landmark.getColorHEX()
   ctx.fill();
   ctx.lineWidth = radius / 2;
-  ctx.strokeStyle = (landmark.getPose().image == imagesStore.index) ? "black" : "white";
+  ctx.strokeStyle = (landmark.getPose().image.name == imagesStore.selectedImage.name) ? "black" : "white";
   ctx.stroke();
   ctx.closePath()
 }
@@ -352,7 +352,7 @@ function startDrag(event: MouseEvent) {
   else if (event.button == 2) {
     let pose = {
       marker : pos,
-      image : imagesStore.index
+      image : imagesStore.selectedImage
     } as Pose
     if (!onImage(pos)) {
       // Image not clicked
@@ -404,7 +404,7 @@ function stopDrag(event: MouseEvent) {
     if (landmarkDragged.value != null) {
       //update pos of landmark
       let landmark = landmarkDragged.value
-      landmark.setPose(imagesStore.index, getPos(event))
+      landmark.setPose(imagesStore.selectedImage, getPos(event))
       repository.computeLandmarkPosition(imagesStore.objectPath, landmark.pose).then((position) => {
         landmark.setPosition(position)
       })
@@ -473,8 +473,9 @@ function onImage(pos: Coordinates): boolean {
 
 async function addDistance(pose : Pose) {
   let distance = new Distance("Distance " + (landmarksStore.distances.length + 1))
-  landmarksStore.distances.push(distance)
-  distance.landmarks.push(await createLandmark(pose, distance.color));
+  let index = landmarksStore.distances.push(distance) -1
+  let landmark = await createLandmark(pose, distance.color)
+  landmarksStore.distances[index].landmarks.push(landmark);
 }
 
 async function createLandmark(pose: Pose, color: Color | undefined = undefined) : Promise<Landmark> {
@@ -512,8 +513,8 @@ function deleteLandmark(landmark: Landmark) {
       @mousedown="startDrag" @mouseup="stopDrag" @mousemove="mousemove" @mouseout="stopDrag" @wheel="zoomWithWheel"
       @contextmenu.prevent>
     </canvas>
-    <img ref="base_image" class="hidden" :src="imagesStore.selectedImage!.thumbnail || imagesStore.selectedImage!.image"
-      :alt="(imagesStore.selectedImage!.thumbnail) ? 'Thumbnail of ' + imagesStore.selectedImage!.name : imagesStore.selectedImage!.name" aspect-ratio="auto" @load="loaded">
+    <img ref="base_image" class="hidden" :src="imagesStore.selectedImage.thumbnail || imagesStore.selectedImage.image"
+      :alt="(imagesStore.selectedImage.thumbnail) ? 'Thumbnail of ' + imagesStore.selectedImage.name : imagesStore.selectedImage.name" aspect-ratio="auto" @load="loaded">
   </div>
 
 </template>

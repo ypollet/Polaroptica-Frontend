@@ -1,5 +1,6 @@
 export type RotationImage = {
     name: string,
+    label: string,
     angle: number,
     image: string,
     thumbnail: string

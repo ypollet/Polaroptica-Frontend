@@ -29,7 +29,7 @@ export const useSettingsStore = defineStore('settings', {
 
 export const useImagesStore = defineStore('images', {
   state: () => ({
-    objectPath: "isrnbel001_r1_xpl_rotated",
+    objectPath: "",
     index : 0,
     rotationImages : new Array<RotationImage>(),
     anglesMap : new Map<number,number>(),
@@ -38,7 +38,7 @@ export const useImagesStore = defineStore('images', {
     offset : {x:0, y:0}
   }),
   getters: {
-    selectedImage : (state) => (state.index >= 0 && state.index < state.rotationImages.length) ?  state.rotationImages[state.index] : {"name":"RBINS Logo","angle": -1,"image":"https://www.naturalsciences.be/bundles/8c62adb1e0fbef009ef7c06c69a991890012e203/img/logos/logo.svg", "thumbnail":""},
+    selectedImage : (state) => (state.index >= 0 && state.index < state.rotationImages.length) ?  state.rotationImages[state.index] : {"name":"RBINS Logo", "label":"RBINS Logo","angle": -1,"image":"https://www.naturalsciences.be/bundles/8c62adb1e0fbef009ef7c06c69a991890012e203/img/logos/logo.svg", "thumbnail":""},
     angleRotations : (state) => new Set(state.rotationImages.map((image) => image.angle)),
     angle: (state) => (state.index >= 0 && state.index < state.rotationImages.length) ? state.rotationImages[state.index].angle : -1
   },
@@ -61,7 +61,7 @@ export const useImagesStore = defineStore('images', {
       this.moveIndex(-1)
     },
     getImageName(index : number){
-      return (index >= 0 && index < this.rotationImages.length) ? this.rotationImages[index].name : "Image " + index
+      return (index >= 0 && index < this.rotationImages.length) ? this.rotationImages[index].label : "Image " + index
     }
 
   },
