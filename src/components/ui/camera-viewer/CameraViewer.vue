@@ -31,7 +31,7 @@ async function getImages(): Promise<ProjectData> {
     imageStore.rotationImages = data.rotationImages
     imageStore.size = data.size
     imageStore.anglesMap = new Map(imageStore.rotationImages.map((image, index) => [Math.round(image.angle), index]))
-
+    imageStore.zoom = 0
     return data
   })
 }

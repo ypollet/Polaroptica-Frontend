@@ -18,6 +18,6 @@ export type ProjectData = {
 }
 
 export type Ratio = {
-    ratioH: number,
-    ratioW: number
+    height: number,
+    width: number
 }

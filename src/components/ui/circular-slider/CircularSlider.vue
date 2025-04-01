@@ -7,7 +7,7 @@ const props = defineProps<CircularSliderProps & { class?: HTMLAttributes['class'
 const emits = defineEmits<CircularSliderEmits>()
 
 const containerSize = 150;
-const sliderSize = ref(13);
+const sliderSize = ref(25);
 const stepSize = ref(3);
 const radius = containerSize / 2;
 const mdown = ref(false);
