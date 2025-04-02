@@ -64,7 +64,7 @@ base_image.value.alt = (imagesStore.selectedImage.thumbnail) ? 'Thumbnail of ' +
 
 const canvas = useTemplateRef('canvas')
 
-const full_image = new Image()
+var full_image = new Image()
 const shiftCanvas = ref<Coordinates>({ x: 0, y: 0 })
 const dragging = ref<boolean>(false)
 const landmarkDragged = ref<Landmark | null>(null)
@@ -98,6 +98,7 @@ function loaded() {
         nextTick(() => {
           // Just verifies we draw the right image
           if (base_image.value.alt.endsWith(image_name)) {
+            full_image = new Image()
             full_image.src = imagesStore.selectedImage.image
             full_image.alt = image_name
 
