@@ -72,10 +72,10 @@ const handleMouseUp = () => {
 </script>
 
 <template>
-  <div id="completeContainer" class="p-8" @mousemove="handleMouseMove" @mouseleave="handleMouseUp" @mouseup="handleMouseUp" >
+  <div id="completeContainer" class="p-0 h-full flex justify-center items-center" @mousemove="handleMouseMove" @mouseleave="handleMouseUp" @mouseup="handleMouseUp" >
     <div id="rotationSliderContainer" :class="cn(
-      'relative flex touch-none select-none items-center rounded-full bg-gray-300 dark:bg-gray-300 m-auto',
-      'cursor-default justify-center items-center',
+      'relative touch-none select-none rounded-full bg-gray-300 dark:bg-gray-300',
+      'cursor-default flex justify-center items-center',
       props.class,
     )" >
       <div id="rotationSlider" @mousedown="handleMouseDown" :class="cn(

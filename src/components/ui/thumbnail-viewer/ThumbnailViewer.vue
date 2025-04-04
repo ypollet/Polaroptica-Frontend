@@ -77,8 +77,8 @@ function updateRect() {
 }
 </script>
 <template>
-    <div ref="imageContainer" class="w-full h-auto border flex justify-center items-center relative">
-      <div class="absolute bottom-0 left-0 w-full h-full">
+    <div ref="imageContainer" class="border justify-center items-center relative">
+      <div class="absolute bottom-0 left-0 w-full">
         <svg v-if="isZoomedOut" class="w-full h-full">
           <rect id="box" :x="scaledZoomRect.left" :y="scaledZoomRect.top" :width="scaledZoomRect.width"
             :height="scaledZoomRect.height" />

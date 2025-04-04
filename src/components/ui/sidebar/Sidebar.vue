@@ -16,12 +16,14 @@ const landmarksStore = useLandmarksStore()
 <template>
   <div class="flex flex-col pb-[12px] w-auto h-full">
     <div class="flex-none space-y-4 py-4">
-      <div class="flex justify-center">
-        <CircularSlider :modelValue="imageStore.angle"
-          @update:modelValue="$event => { if ($event != undefined && imageStore.anglesMap.get($event) != undefined) imageStore.setIndex(imageStore.anglesMap.get($event!)!) }"
-          :steps="imageStore.angleRotations" />
-        <ThumbnailViewer class="h-auto w-1/2" />
-        
+      <div class="flex justify-center w-[350px]">
+        <div class="w-1/2">
+          <CircularSlider :modelValue="imageStore.angle"
+            @update:modelValue="$event => { if ($event != undefined && imageStore.anglesMap.get($event) != undefined) imageStore.setIndex(imageStore.anglesMap.get($event!)!) }"
+            :steps="imageStore.angleRotations" />
+        </div>
+        <ThumbnailViewer class="flex-shrink w-1/2" />
+
         <!-- :model-value="[imageStore.index]" :max="imageStore.stackImages.length - 1" :step="1"
           @update:modelValue="$event => imageStore.setIndex($event![0])"-->
       </div>
