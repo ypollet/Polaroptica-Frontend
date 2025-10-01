@@ -446,6 +446,7 @@ function startDrag(event: MouseEvent) {
     // reinit landmarkDrag
     //reinitDraggedLandmark()
   }
+  update()
 }
 
 function mousemove(event: MouseEvent) {
