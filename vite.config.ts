@@ -35,12 +35,16 @@ export default defineConfig({
             return 'vendor_vuedraggable';
           } else if (id.includes('/node_modules/mathjs')) {
             return 'vendor_mathjs';
-          }else if (id.includes('/node_modules/@vue')) {
-            return 'vendor_@vue';
+          }else if (id.includes('/node_modules/tailwind')) {
+            return 'vendor_tailwind';
+          } else if (id.includes('/node_modules/sortable')) {
+            return 'vendor_sortable';
+          } else if (id.includes('/node_modules/radix')) {
+            return 'vendor_radix';
           } else if (id.includes('/node_modules/')) {
             return 'vendor';
           } else {
-            return 'index';
+            return null;
           }
         },
       },

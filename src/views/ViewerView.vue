@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import {useRoute} from 'vue-router'
-
-import { ref } from "vue";
 import Menu from "@/components/Menu.vue";
 import { Separator } from "@/components/ui/separator";
 import { Sidebar } from "@/components/ui/sidebar";
