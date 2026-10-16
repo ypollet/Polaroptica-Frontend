@@ -39,7 +39,6 @@ import { Distance } from '@/data/models/distance'
 import { useToggle, useDark } from '@vueuse/core'
 import { useSettingsStore, useLandmarksStore, useImagesStore } from '@/lib/stores'
 import saveAs from 'file-saver';
-import * as math from 'mathjs'
 
 const settingsStore = useSettingsStore()
 const landmarksStore = useLandmarksStore()
@@ -50,6 +49,12 @@ const isDark = useDark({
 })
 
 const toggleDark = useToggle(isDark)
+
+function date2string(date : Date) {
+  let day = `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2,'0')}${date.getDate().toString().padStart(2,'0')}`
+  let time = `${date.getHours().toString().padStart(2,'0')}${date.getMinutes().toString().padStart(2,'0')}${date.getSeconds().toString().padStart(2,'0')}`
+  return `${day}-${time}`;
+}
 
 
 function downloadCsv() {
@@ -69,8 +74,10 @@ function downloadCsv() {
 
   let csvContent = rows.map(e => e.join(";")).join("\n");
 
+  let formattedDate = date2string(new Date())
+
   let blob: Blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-  saveAs(blob, "landmarks_" + imagesStore.objectPath + ".csv")
+  saveAs(blob, "anno_polar_" + imagesStore.objectPath + "_" + formattedDate + ".csv")
 }
 
 function downloadJSON() {
@@ -101,9 +108,11 @@ function downloadJSON() {
   })
   data.set('distances', distances)
 
+  let formattedDate = date2string(new Date())
+
 
   var blob = new Blob([JSON.stringify(Object.fromEntries(data.entries()))], { type: "application/json;charset=utf-8" });
-  saveAs(blob, "landmarks_" + imagesStore.objectPath + "_" + new Date().getTime() + ".json");
+  saveAs(blob, "anno_polar_" + imagesStore.objectPath + "_" + formattedDate + ".json");
 }
 
 function onSubmit(event: Event) {
