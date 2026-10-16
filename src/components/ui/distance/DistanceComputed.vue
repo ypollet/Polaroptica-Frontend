@@ -25,7 +25,7 @@ function computeScaledDistance(distance : Distance): number {
     }
     let dist = (intervals) ? computeDistance(intervals) : 0
 
-    return dist * landmarksStore.adjustFactor / math.number(Scale[landmarksStore.scale as keyof typeof Scale])
+    return dist * landmarksStore.adjustFactor / Scale[landmarksStore.scale as keyof typeof Scale]
 }
 
 function computeDistance(intervals: [number, number][]): number {
