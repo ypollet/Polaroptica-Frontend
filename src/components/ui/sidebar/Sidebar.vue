@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { LandmarkList } from "@/components/ui/landmark";
 import { DistanceComputed, DistanceList } from "@/components/ui/distance";
-import { Slider } from "@/components/ui/slider";
 import { CircularSlider } from '@/components/ui/circular-slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useImagesStore, useLandmarksStore } from "@/lib/stores";
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import ThumbnailViewer from "../thumbnail-viewer/ThumbnailViewer.vue";
 
 const imageStore = useImagesStore()

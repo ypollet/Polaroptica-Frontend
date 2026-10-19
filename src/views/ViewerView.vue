@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { Sidebar } from "@/components/ui/sidebar";
 import { useSettingsStore, useImagesStore } from "@/lib/stores";
 import { CameraViewer } from "@/components/ui/camera-viewer"
+import MainLogo from '@/components/ui/logo/MainLogo.vue';
 
 const settingsStore = useSettingsStore()
 const imageStore = useImagesStore()
@@ -16,7 +17,13 @@ imageStore.setPath(urlParams.get('series') as string)
 
 <template>
   <main class="h-screen">
-    <Menu class="sticky menu top-0 flex flex-row grow z-50"></Menu>
+    <div class="flex menu">
+      <Menu class="sticky top-0 flex flex-row grow z-50"></Menu> 
+      <div class="flex pr-2 items-center space-x-2">
+        <MainLogo :height=35 :width=35 />
+        <h1>Polaroptica</h1>
+      </div>
+    </div>
     <Separator></Separator>
     <div class="rest_height flex"
     :class="settingsStore.isLeft ? 'flex-row' : 'flex-row-reverse'">
@@ -33,7 +40,7 @@ imageStore.setPath(urlParams.get('series') as string)
 
 <style scoped>
 .menu {
-  height: 60px;
+  height: 40px;
 }
 
 .sidebar {
@@ -41,7 +48,7 @@ imageStore.setPath(urlParams.get('series') as string)
 }
 
 .rest_height {
-  height: calc(100% - 61px);
+  height: calc(100% - 40px);
 }
 
 .rest_width {
