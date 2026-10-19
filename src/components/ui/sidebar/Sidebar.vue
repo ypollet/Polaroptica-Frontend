@@ -5,6 +5,7 @@ import { CircularSlider } from '@/components/ui/circular-slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useImagesStore, useLandmarksStore } from "@/lib/stores";
 import ThumbnailViewer from "../thumbnail-viewer/ThumbnailViewer.vue";
+import Label from "../label/Label.vue";
 
 const imageStore = useImagesStore()
 const landmarksStore = useLandmarksStore()
@@ -24,6 +25,9 @@ const landmarksStore = useLandmarksStore()
 
         <!-- :model-value="[imageStore.index]" :max="imageStore.stackImages.length - 1" :step="1"
           @update:modelValue="$event => imageStore.setIndex($event![0])"-->
+      </div>
+      <div class="flex grow flex-row w-full justify-center">
+        <Label class="p-2">{{ imageStore.selectedImage.label }}</Label>
       </div>
       <Tabs :model-value="landmarksStore.tab" @update:modelValue="$event => landmarksStore.tab = $event.toString()"
         default-value="landmarks" class="w-full my-4">

@@ -45,9 +45,6 @@ async function getImages(): Promise<ProjectData> {
       <div class="text-red-600">{{ error }}</div>
     </div>
     <div v-if="data" class="w-full h-full flex flex-col items-center">
-      <div class="flex grow flex-row w-full justify-start">
-        <Label class="border p-2">{{ imageStore.selectedImage.label }}</Label>
-      </div>
       <ImageViewer class="object-fit" aspect-ratio="auto" draggable="false" />
     </div>
   </div>
