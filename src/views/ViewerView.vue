@@ -21,7 +21,7 @@ imageStore.setPath(urlParams.get('series') as string)
       <Menu class="sticky top-0 flex flex-row grow z-50"></Menu> 
       <div class="flex pr-2 items-center space-x-2">
         <MainLogo :height=35 :width=35 />
-        <h1>Polaroptica</h1>
+        <h1 class="font-dejavu font-bold text-brand">Polaroptica</h1>
       </div>
     </div>
     <Separator></Separator>
