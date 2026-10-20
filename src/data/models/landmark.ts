@@ -7,7 +7,13 @@ export type Pose = {
     image: RotationImage
 }
 
-
+export type LandmarkObject = {
+    id: string
+    label: string
+    pose: Pose
+    position : Position
+    color: string
+}
 
 export class Landmark {
     id: string
@@ -38,8 +44,12 @@ export class Landmark {
         return this.id == other.id
     }
 
+    static fromJSON(landmark : LandmarkObject){
+        return new Landmark(landmark.id, landmark.label, landmark.pose, landmark.position, Color(landmark.color))
+    } 
+
     toJSON() {
-        return { id: this.id, label: this.label, color: this.color.hex(), pose: this.pose, position : this.position }
+        return { id: this.id, label: this.label, pose: this.pose, position : this.position, color: this.color.hex() }
     }
 
     getId() : string {
