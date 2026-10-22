@@ -5,21 +5,22 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 
-import tailwind from "tailwindcss"
-import autoprefixer from "autoprefixer"
+import tailwindcss from '@tailwindcss/vite'
 
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    css: {
-    postcss: {
-      plugins: [tailwind(), autoprefixer()],
-    },
-  },
   plugins: [
     vue(),
     vueJsx(),
+    tailwindcss(),
   ],
+  server: {
+    watch: {
+      usePolling: true,
+      ignored: ["/node_modules/*"]
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -31,23 +32,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes('/node_modules/vuedraggable')) {
-            return 'vendor_vuedraggable';
-          } else if (id.includes('/node_modules/mathjs')) {
-            return 'vendor_mathjs';
-          }else if (id.includes('/node_modules/tailwind')) {
-            return 'vendor_tailwind';
-          } else if (id.includes('/node_modules/sortable')) {
-            return 'vendor_sortable';
-          } else if (id.includes('/node_modules/radix')) {
-            return 'vendor_radix';
-          } else if (id.includes('/node_modules/')) {
-            return 'vendor';
-          } else {
-            return null;
+          if (id.includes('node_modules')) {
+            return id.toString().split('node_modules/')[1].split('/')[0].toString();
           }
         },
       },
     },
-  },
+  }
 })

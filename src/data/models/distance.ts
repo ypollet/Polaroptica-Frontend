@@ -1,6 +1,7 @@
 import { Landmark, type LandmarkObject } from "@/data/models/landmark"
 import Color from "color"
 import * as math from "mathjs"
+import type { Coordinates } from "./coordinates"
 
 export type DistanceObject = {
     label: string
@@ -25,16 +26,16 @@ export class Distance {
         this.color = color || Color.rgb([Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)])
     }
 
-    get distance() : [number, number][] | undefined{
+    get distance() : Coordinates[] | undefined{
         if(this.landmarks.length < 2 ){
             return undefined
         }
-        let distance : [number, number][] = new Array()
+        let distance : Coordinates[] = new Array()
         for(let i = 1; i < this.landmarks.length; i++){
-            distance.push([
-                math.abs(this.landmarks[i].position.x - this.landmarks[i-1].position.x),
-                math.abs(this.landmarks[i].position.y - this.landmarks[i-1].position.y)
-            ])
+            distance.push({
+               x: math.abs(this.landmarks[i].position.x - this.landmarks[i-1].position.x),
+               y: math.abs(this.landmarks[i].position.y - this.landmarks[i-1].position.y)
+        })
         }
         return distance
     }
@@ -51,6 +52,16 @@ export class Distance {
             ])
         }
         return distance
+    }
+
+    // All the landmarks are placed on the image of the first one, null if there is no landmark yet
+    get angle() : number | null {
+        return (this.landmarks.length > 0) ? this.landmarks[0].pose.image.angle : null
+    }
+
+    // True if a landmark can be placed on an image with this angle
+    acceptsAngle(angle : number) : boolean {
+        return this.angle == null || Math.round(this.angle) == Math.round(angle)
     }
 
     in(landmark : Landmark | string) : boolean{

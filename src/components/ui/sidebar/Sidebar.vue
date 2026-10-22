@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LandmarkList } from "@/components/ui/landmark";
-import { DistanceComputed, DistanceList } from "@/components/ui/distance";
+import { DistanceList } from "@/components/ui/distance";
 import { CircularSlider } from '@/components/ui/circular-slider';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useImagesStore, useLandmarksStore } from "@/lib/stores";
@@ -14,14 +14,14 @@ const landmarksStore = useLandmarksStore()
 
 <template>
   <div class="flex flex-col pb-[12px] w-auto h-full">
-    <div class="flex-none space-y-4 py-4">
+    <div class="flex flex-col items-center space-y-4 py-4">
       <div class="flex justify-center w-[350px]">
         <div class="w-1/2">
           <CircularSlider :modelValue="imageStore.angle"
             @update:modelValue="$event => { if ($event != undefined && imageStore.anglesMap.get($event) != undefined) imageStore.setIndex(imageStore.anglesMap.get($event!)!) }"
             :steps="imageStore.angleRotations" />
         </div>
-        <ThumbnailViewer class="flex-shrink w-1/2" />
+        <ThumbnailViewer class="shrink w-1/2" />
 
         <!-- :model-value="[imageStore.index]" :max="imageStore.stackImages.length - 1" :step="1"
           @update:modelValue="$event => imageStore.setIndex($event![0])"-->
@@ -46,9 +46,6 @@ const landmarksStore = useLandmarksStore()
           <DistanceList />
         </TabsContent>
       </Tabs>
-    </div>
-    <div class="flex grow items-end mt-4">
-      <DistanceComputed />
     </div>
   </div>
 </template>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-import { Loader2 } from 'lucide-vue-next';
+import { PhSpinnerGap } from '@phosphor-icons/vue';
 
 import { useQuery } from '@tanstack/vue-query'
 
@@ -14,7 +12,6 @@ import ImageViewer from '@/components/ui/image-viewer/ImageViewer.vue';
 import { RepositoryFactory } from '@/data/repositories/repository_factory'
 import { repositorySettings } from "@/config/appSettings"
 
-import Label from '../label/Label.vue';
 
 
 const imageStore = useImagesStore()
@@ -39,7 +36,7 @@ async function getImages(): Promise<ProjectData> {
 <template>
   <div class="w-full h-full border flex justify-center items-center">
     <div v-if="isPending" class="w-full h-full flex justify-center items-center">
-      <Loader2 class="animate-spin mr-10" width="10%" height="10%" />
+      <PhSpinnerGap class="animate-spin mr-10" width="10%" height="10%" />
     </div>
     <div v-if="isError" class="w-full h-full flex justify-center items-center">
       <div class="text-red-600">{{ error }}</div>

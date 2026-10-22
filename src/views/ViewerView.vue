@@ -27,11 +27,11 @@ imageStore.setPath(urlParams.get('series') as string)
     <Separator></Separator>
     <div class="rest_height flex"
     :class="settingsStore.isLeft ? 'flex-row' : 'flex-row-reverse'">
-      <div class=" overflow-auto w-96 flex-none rounded-md border p-4">
+      <div class="sidebar overflow-auto w-96 flex-none rounded-md border p-4">
         <Sidebar />
       </div>
 
-      <div class="w-0 flex-auto items-center justify-center">
+      <div class="rest-width w-0 flex-auto items-center justify-center">
         <CameraViewer/>
       </div>
     </div>

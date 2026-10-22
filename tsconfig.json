@@ -9,4 +9,10 @@
     }
   ],
   
+  "compilerOptions": {
+    "composite": false,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
 }

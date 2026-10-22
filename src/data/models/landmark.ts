@@ -23,6 +23,8 @@ export class Landmark {
     color: Color
     show: boolean
     edit: boolean
+    isClicked: boolean
+    isDragged: boolean
 
     constructor(id: string, label: string, pose: Pose, position : Position, color: Color | null = null) {
         this.id = id
@@ -32,6 +34,8 @@ export class Landmark {
         this.edit = false
         this.color = color || Color.rgb([Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)])
         this.show = true
+        this.isClicked = false
+        this.isDragged = false
     }
 
     equals(other : Landmark | string | null){

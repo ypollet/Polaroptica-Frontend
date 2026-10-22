@@ -26,7 +26,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import Color from "color"
 
 import { Landmark, type LandmarkObject } from '@/data/models/landmark'
 import { Distance, type DistanceObject } from '@/data/models/distance'
@@ -178,13 +177,13 @@ function importLandmarks(jsonData: string) {
           <MenubarContent>
             <MenubarLabel inset>
               <div class="flex flex-row justify-between h-full w-full"><span>Dark Mode :</span>
-                <Switch :checked="isDark" @update:checked="toggleDark" class="inline-block align-middle ml-auto">
+                <Switch :model-value="isDark" @update:model-value="toggleDark" class="inline-block align-middle ml-auto">
                 </Switch>
               </div>
             </MenubarLabel>
             <MenubarLabel inset>
               <div class="flex flex-row justify-between h-full w-full"><span>Reverse Mode :</span>
-                <Switch :checked="settingsStore.isLeft" @update:checked="settingsStore.useToggleLeft"
+                <Switch :model-value="settingsStore.isLeft" @update:model-value="settingsStore.useToggleLeft"
                   class="inline-block align-middle self-end"></Switch>
               </div>
             </MenubarLabel>

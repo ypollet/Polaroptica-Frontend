@@ -25,11 +25,11 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
-const { selectedImage } = storeToRefs(imagesStore)
+const { index } = storeToRefs(imagesStore)
 const screenZoom = ref<number>(1)
 
 watch(
-  selectedImage,
+  index,
   () => {
     update()
     base_image.value.src = imagesStore.selectedImage.thumbnail || imagesStore.selectedImage.image
@@ -146,29 +146,36 @@ function drawImage() {
       if (distance.landmarks.length == 0 || !distance.show) {
         return;
       }
-      ctx.beginPath()
-      let landmark = distance.landmarks[0]
-      let marker = (landmark.equals(landmarkDragged.value)) ? draggedPos.value : landmark.pose.marker
+      
+      let oldLandmark = distance.landmarks[0]
+      let marker = (oldLandmark.equals(landmarkDragged.value)) ? draggedPos.value : oldLandmark.pose.marker
       let shiftedMarker = {
         x: marker.x * ratio.width + shiftCanvas.value.x,
         y: marker.y * ratio.height + shiftCanvas.value.y
       }
-      ctx.moveTo(shiftedMarker.x, shiftedMarker.y)
+      
       for (let i = 1; i < distance.landmarks.length; i++) {
-        landmark = distance.landmarks[i]
+        ctx.beginPath()
+        ctx.moveTo(shiftedMarker.x, shiftedMarker.y)
+        let landmark = distance.landmarks[i]
         marker = (landmark.equals(landmarkDragged.value)) ? draggedPos.value : landmark.pose.marker
         shiftedMarker = {
           x: marker.x * ratio.width + shiftCanvas.value.x,
           y: marker.y * ratio.height + shiftCanvas.value.y
         }
         ctx.lineTo(shiftedMarker.x, shiftedMarker.y)
+        ctx.setLineDash((oldLandmark.equals(landmarkDragged.value) || landmark.equals(landmarkDragged.value)) ? [10 / zoomX, 5 / zoomX] : [])
+        ctx.strokeStyle = distance.getColorHEX();
+        ctx.lineWidth = radius / 4;
+        ctx.stroke()
+        ctx.closePath()
+        oldLandmark = landmark
       }
-      ctx.strokeStyle = distance.getColorHEX();
-      ctx.lineWidth = radius / 4;
-      ctx.stroke()
-      ctx.closePath()
+      ctx.setLineDash([]) // reset Dash
+      
     })
 
+    // Write the landmarks
     landmarksStore.landmarks.forEach((landmark) => {
       if (!landmark.show) {
         return
@@ -190,7 +197,7 @@ function drawImage() {
     })
 
 
-    // Stroke the points
+    
     landmarksStore.distances.forEach((distance) => {
       if (!distance.show) {
         return;
@@ -285,6 +292,10 @@ function drawMarker(ctx: CanvasRenderingContext2D, landmark: Landmark, radius: n
     x: landmark.getPose().marker.x * ratio.width,
     y: landmark.getPose().marker.y * ratio.height
   }
+  if(landmark.isClicked){
+    radius = radius*2
+  }
+  
   ctx.beginPath()
   ctx.arc((marker.x + shiftCanvas.value.x), (marker.y + shiftCanvas.value.y), radius, 0, 2 * Math.PI);
   ctx.fillStyle = landmark.getColorHEX()
@@ -410,7 +421,18 @@ function startDrag(event: MouseEvent) {
     dragging.value = true
 
     let landmark = checkPointCircle(pos)
+    if (landmark) {
+      showLandmarkInSidebar(landmark)
+      // A landmark of a distance fixed on another image can't be moved here
+      const distance = distanceOf(landmark)
+      if (distance && !distance.acceptsAngle(imagesStore.angle)) {
+        landmark = null
+      }
+    }
     landmarkDragged.value = landmark
+    if (landmark) {
+      landmark.isDragged = true
+    }
     draggedPos.value = landmark?.pose.marker ?? { x: -1, y: -1 }
   }
   else if (event.button == 2) {
@@ -433,6 +455,9 @@ function startDrag(event: MouseEvent) {
           break;
         case "distances":
           if (landmarksStore.selectedDistance) {
+            if (!landmarksStore.selectedDistance.acceptsAngle(imagesStore.angle)) {
+              return;
+            }
             addLandmark(pose, landmarksStore.selectedDistance)
           } else {
             addDistance(pose)
@@ -481,6 +506,9 @@ function stopDrag(event: MouseEvent) {
 }
 
 function reinitDraggedLandmark() {
+  if (landmarkDragged.value != null) {
+    landmarkDragged.value.isDragged = false
+  }
   landmarkDragged.value = null
   draggedPos.value = { x: -1, y: -1 }
 }
@@ -507,6 +535,30 @@ function checkPointCircle(pos: Coordinates): Landmark | null {
     })
   })
   return landmarkClicked
+}
+
+// Switch the sidebar to the tab owning the landmark and select its distance
+function showLandmarkInSidebar(landmark: Landmark) {
+  if (landmarksStore.landmarks.some((el) => el.equals(landmark))) {
+    landmarksStore.tab = "landmarks"
+    return
+  }
+  const distanceIndex = landmarksStore.distances.findIndex((distance) => distance.in(landmark))
+  if (distanceIndex !== -1) {
+    landmarksStore.tab = "distances"
+    landmarksStore.selectedDistanceIndex = distanceIndex
+  }
+}
+
+function distanceOf(landmark: Landmark): Distance | undefined {
+  return landmarksStore.distances.find((distance) => distance.in(landmark))
+}
+
+function goToAngle(angle: number) {
+  const index = imagesStore.anglesMap.get(Math.round(angle))
+  if (index !== undefined) {
+    imagesStore.setIndex(index)
+  }
 }
 
 function checkDragLandmark(pos: Coordinates, landmark: Landmark): Landmark | null {
